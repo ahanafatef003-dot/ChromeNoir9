@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Returns & Exchanges — Chrome Noir</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .back-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--chrome-dark);border-bottom:1px solid rgba(192,192,192,.15);padding-bottom:2px;transition:color .2s,border-color .2s}
+    .back-btn:hover{color:var(--chrome);border-color:rgba(192,192,192,.4)}
+    .divider{width:100%;height:1px;background:rgba(192,192,192,.06);margin:2rem 0}
+    .step-card{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
+    .step-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;border:1px solid rgba(192,192,192,.2);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;color:var(--chrome);font-weight:700}
+  </style>
+</head>
+<body style="min-height:100vh;background:#080808;">
+
+<nav style="position:sticky;top:0;z-index:100;background:rgba(10,10,10,.9);border-bottom:1px solid rgba(192,192,192,.08);backdrop-filter:blur(20px);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+  <a href="../index.html" class="back-btn">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Chrome Noir
+  </a>
+  <span style="font-family:'Playfair Display',serif;font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--chrome-light);text-transform:uppercase;">Chrome Noir</span>
+</nav>
+
+<main style="padding:60px 24px 80px;max-width:800px;margin:0 auto;">
+
+  <div style="margin-bottom:40px">
+    <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--chrome-dark);font-family:'Space Mono',monospace;margin-bottom:12px">— Policy</p>
+    <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);color:white;line-height:1.1">Returns &<br/><span style="background:linear-gradient(135deg,#888,#e8e8e8,#aaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Exchanges</span></h1>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--chrome);margin-bottom:16px;font-style:italic">Return Policy</h2>
+  <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;letter-spacing:.06em;line-height:1.9;margin-bottom:12px">
+    We accept returns within <strong style="color:var(--chrome)">7 days</strong> of receiving your order. Items must be unworn, unwashed, and in original condition with all tags attached.
+  </p>
+  <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;letter-spacing:.06em;line-height:1.9">
+    Sale items and accessories are <strong style="color:var(--chrome)">final sale</strong> and cannot be returned or exchanged.
+  </p>
+
+  <div class="divider"></div>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--chrome);margin-bottom:20px;font-style:italic">How to Return</h2>
+
+  <div class="step-card">
+    <div class="step-num">01</div>
+    <div>
+      <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--chrome);font-family:'Space Mono',monospace;font-weight:700;margin-bottom:6px">Contact Us</p>
+      <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Email <span style="color:var(--chrome)">contact@chromenoir.co</span> with your order ID, reason for return, and photos of the item.</p>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">02</div>
+    <div>
+      <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--chrome);font-family:'Space Mono',monospace;font-weight:700;margin-bottom:6px">Approval</p>
+      <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Our team reviews your request within 24 hours and sends return instructions.</p>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">03</div>
+    <div>
+      <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--chrome);font-family:'Space Mono',monospace;font-weight:700;margin-bottom:6px">Ship Back</p>
+      <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Pack the item securely and send it to our address. Customer bears return shipping costs.</p>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-num">04</div>
+    <div>
+      <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--chrome);font-family:'Space Mono',monospace;font-weight:700;margin-bottom:6px">Refund / Exchange</p>
+      <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Once received and inspected, your exchange ships or refund is processed via bKash within 3 business days.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--chrome);margin-bottom:16px;font-style:italic">Non-Returnable Items</h2>
+  <ul style="padding-left:1.5rem;list-style:disc">
+    <li style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.9;margin-bottom:6px">Items marked SALE or FINAL SALE</li>
+    <li style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.9;margin-bottom:6px">Accessories and accessories bundles</li>
+    <li style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.9;margin-bottom:6px">Items with removed tags, signs of wear, or alterations</li>
+    <li style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.9">Items returned after 7 days of delivery</li>
+  </ul>
+
+</main>
+</body>
+</html>

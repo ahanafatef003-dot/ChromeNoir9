@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHROME NOIR — Legacy Begins</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Space+Mono:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+
+ <script src="https://cdn.tailwindcss.com"></script>
+
+<script src="js/backendless-config.js"></script>
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+<body>
+
+<div id="cart-overlay" onclick="closeCart()"></div>
+
+<div id="cart-sidebar">
+  <div class="flex items-center justify-between p-6 border-b border-[rgba(192,192,192,0.1)]">
+    <div>
+      <p class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono mb-0.5">Your</p>
+      <h3 class="font-playfair font-bold italic text-lg chrome-text">Selection</h3>
+    </div>
+    <button onclick="closeCart()" class="icon-btn w-9 h-9 rounded-full flex items-center justify-center">
+      <svg width="14" height="14" fill="none" stroke="var(--chrome)" stroke-width="1.5" viewBox="0 0 24 24">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+    <div id="cart-empty" class="flex flex-col items-center justify-center h-full text-center py-20">
+      <svg width="40" height="40" fill="none" stroke="rgba(192,192,192,0.2)" stroke-width="1" viewBox="0 0 24 24" class="mb-4">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+      </svg>
+      <p class="text-sm tracking-[0.25em] uppercase text-[var(--chrome-dark)] font-mono">Your cart is empty</p>
+    </div>
+  </div>
+  <div id="cart-summary" class="p-6 border-t border-[rgba(192,192,192,0.1)] hidden">
+    <div class="flex items-center justify-between mb-4">
+      <span class="text-sm tracking-[0.2em] uppercase font-mono text-[var(--chrome-dark)]">Total</span>
+      <span id="cart-total" class="font-playfair font-bold text-xl chrome-text">৳0</span>
+    </div>
+    <p class="text-[8px] tracking-[0.15em] uppercase font-mono text-[rgba(192,192,192,0.3)] mb-4">Shipping calculated at checkout</p>
+    <button onclick="goToCheckout()" class="checkout-btn">Proceed to Checkout</button>
+    <p class="text-[7px] tracking-[0.15em] uppercase font-mono text-[rgba(192,192,192,0.2)] text-center mt-3">Free shipping on orders over ৳2000</p>
+  </div>
+</div>
+
+<div id="tracking-overlay" onclick="closeTracking()"></div>
+<div id="tracking-sidebar">
+  <div class="flex items-center justify-between p-6 border-b border-[rgba(192,192,192,0.1)]">
+    <div>
+      <p class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono mb-0.5">Your</p>
+      <h3 class="font-playfair font-bold italic text-lg chrome-text">Orders</h3>
+    </div>
+    <button onclick="closeTracking()" class="icon-btn w-9 h-9 rounded-full flex items-center justify-center">
+      <svg width="14" height="14" fill="none" stroke="var(--chrome)" stroke-width="1.5" viewBox="0 0 24 24">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+  <div id="tracking-items" class="flex-1 overflow-y-auto p-6">
+    <div id="tracking-empty" class="flex flex-col items-center justify-center h-full text-center py-20">
+      <svg width="40" height="40" fill="none" stroke="rgba(192,192,192,0.2)" stroke-width="1" viewBox="0 0 24 24" class="mb-4">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+      <p class="text-sm tracking-[0.25em] uppercase text-[var(--chrome-dark)] font-mono">No active orders</p>
+    </div>
+  </div>
+</div>
+
+<div id="order-popup-overlay" onclick="closeOrderPopup()"></div>
+<div id="order-popup">
+  <button onclick="closeOrderPopup()" class="order-popup-close">
+    <svg width="16" height="16" fill="none" stroke="var(--chrome)" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M18 6L6 18M6 6l12 12"/>
+    </svg>
+  </button>
+  <div class="order-popup-content">
+    <div class="order-popup-success-icon">
+      <svg width="32" height="32" fill="none" stroke="var(--chrome)" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+    </div>
+    <h2 class="font-playfair text-2xl italic chrome-text mb-2">Order Confirmed</h2>
+    <p class="text-xs text-[var(--chrome-dark)] tracking-[0.1em] font-mono mb-6">Your legacy begins now.</p>
+    <div class="order-popup-detail">
+      <span class="order-popup-label">Order ID</span>
+      <span id="popup-order-id" class="order-popup-value font-mono"></span>
+    </div>
+    <div class="order-popup-detail">
+      <span class="order-popup-label">Date & Time</span>
+      <span id="popup-order-time" class="order-popup-value"></span>
+    </div>
+    <div class="order-popup-detail">
+      <span class="order-popup-label">Estimated Delivery</span>
+      <span id="popup-delivery-time" class="order-popup-value"></span>
+    </div>
+    <div id="popup-products" class="mt-6 space-y-3"></div>
+    <div class="mt-6 pt-4 border-t border-[rgba(192,192,192,0.1)]">
+      <div class="flex justify-between items-center">
+        <span class="text-sm text-[var(--chrome-dark)] font-mono">Total</span>
+        <span id="popup-total" class="font-playfair font-bold text-xl chrome-text"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav style="animation: navFadeIn .7s ease forwards; opacity:0;"
+     class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-3xl navbar rounded-2xl px-4 md:px-6 py-3 md:py-3.5 flex items-center justify-between">
+  <div class="flex items-center gap-2 md:gap-2.5 cursor-pointer flex-shrink-0" onclick="showPage('home')">
+    <div class="w-6 h-6 md:w-7 md:h-7 rounded-full border border-[rgba(192,192,192,0.3)] flex items-center justify-center">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+        <circle cx="7" cy="7" r="3" fill="rgba(192,192,192,0.8)"/>
+        <circle cx="7" cy="7" r="6" stroke="rgba(192,192,192,0.3)" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <span class="font-playfair text-[10px] md:text-xs font-bold tracking-[0.15em] md:tracking-[0.2em] text-[var(--chrome-light)] uppercase whitespace-nowrap">Chrome Noir</span>
+  </div>
+  <div class="hidden md:flex items-center gap-7">
+    <a href="#" onclick="showPage('home')" class="nav-link active text-sm tracking-[0.18em] text-[var(--chrome-dark)] uppercase font-mono" id="nav-home">Home</a>
+    <a href="#" onclick="showPage('shop')" class="nav-link text-sm tracking-[0.18em] text-[var(--chrome-dark)] uppercase font-mono" id="nav-shop">Shop</a>
+    <a href="#" onclick="showPage('home'); setTimeout(()=>document.getElementById('story-section').scrollIntoView({behavior:'smooth'}),100)" class="nav-link text-sm tracking-[0.18em] text-[var(--chrome-dark)] uppercase font-mono">Story</a>
+    <a href="#" onclick="showPage('home'); setTimeout(()=>document.getElementById('contact-section').scrollIntoView({behavior:'smooth'}),100)" class="nav-link text-sm tracking-[0.18em] text-[var(--chrome-dark)] uppercase font-mono">Contact</a>
+  </div>
+  <div class="flex items-center gap-2 md:gap-3">
+    <button onclick="openTracking()" id="tracking-btn" class="relative text-[10px] md:text-sm tracking-[0.12em] md:tracking-[0.15em] uppercase font-mono text-[var(--chrome)] border border-[rgba(192,192,192,0.25)] rounded-full px-3 md:px-4 py-1.5 md:py-2 hover:border-[rgba(192,192,192,0.6)] hover:bg-[rgba(192,192,192,0.06)] transition-all duration-300 flex items-center gap-1.5 md:gap-2 hidden">
+      <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+      Orders
+      <span id="tracking-count" class="hidden bg-[var(--chrome)] text-black text-[7px] font-bold w-4 h-4 rounded-full flex items-center justify-center font-mono">0</span>
+    </button>
+    <button onclick="openCart()" class="relative text-[10px] md:text-sm tracking-[0.12em] md:tracking-[0.15em] uppercase font-mono text-[var(--chrome)] border border-[rgba(192,192,192,0.25)] rounded-full px-3 md:px-4 py-1.5 md:py-2 hover:border-[rgba(192,192,192,0.6)] hover:bg-[rgba(192,192,192,0.06)] transition-all duration-300 flex items-center gap-1.5 md:gap-2">
+      <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+      </svg>
+      Cart
+      <span id="cart-count" class="hidden bg-[var(--chrome)] text-black text-[7px] font-bold w-4 h-4 rounded-full flex items-center justify-center font-mono">0</span>
+    </button>
+    <button class="md:hidden icon-btn w-8 h-8 rounded-full flex items-center justify-center" onclick="toggleMobileMenu()">
+      <svg width="13" height="13" fill="none" stroke="var(--chrome)" stroke-width="1.5" viewBox="0 0 24 24">
+        <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<div id="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+<div id="mobile-menu">
+  <div class="mobile-nav-top">
+    <div class="mobile-nav-links">
+      <a href="#" onclick="showPage('home');closeMobileMenu()">Home</a>
+      <a href="#" onclick="showPage('shop');closeMobileMenu()">Shop</a>
+      <a href="#" onclick="showPage('home');closeMobileMenu();setTimeout(()=>document.getElementById('story-section').scrollIntoView({behavior:'smooth'}),100)">Story</a>
+      <a href="#" onclick="showPage('home');closeMobileMenu();setTimeout(()=>document.getElementById('contact-section').scrollIntoView({behavior:'smooth'}),100)">Contact</a>
+    </div>
+    <button class="mobile-nav-close" onclick="closeMobileMenu()">
+      <svg width="14" height="14" fill="none" stroke="var(--chrome)" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div id="page-home" class="page active">
+  <section class="hero-section relative min-h-screen flex items-center pt-28 md:pt-36 pb-12 md:pb-20 scanlines">
+    <div class="absolute top-0 right-0 w-[60%] h-[60%] pointer-events-none" style="background:radial-gradient(ellipse 50% 50% at 70% 20%,rgba(192,192,192,.04) 0%,transparent 70%);"></div>
+    <div class="halftone absolute top-16 right-0 w-48 h-80 opacity-30 pointer-events-none hidden md:block"></div>
+    <div class="float-slow absolute top-40 right-[8%] md:right-[12%] opacity-30 md:opacity-40 pointer-events-none hidden sm:block">
+      <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+        <path d="M24 2L26.4 21.6L46 24L26.4 26.4L24 46L21.6 26.4L2 24L21.6 21.6Z" fill="rgba(192,192,192,.5)" stroke="rgba(192,192,192,.3)" stroke-width=".5"/>
+      </svg>
+    </div>
+    <div class="float-fast absolute top-72 right-[22%] opacity-25 pointer-events-none hidden md:block">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 1L15.4 12.6L27 14L15.4 15.4L14 27L12.6 15.4L1 14L12.6 12.6Z" fill="rgba(192,192,192,.6)"/>
+      </svg>
+    </div>
+    <div class="absolute top-24 right-[35%] w-32 h-32 pointer-events-none opacity-20 hidden md:block" style="background:radial-gradient(circle,rgba(192,192,192,.3) 0%,transparent 70%);filter:blur(12px);"></div>
+    <div class="relative z-10 px-5 sm:px-8 md:px-12 lg:px-20 w-full max-w-7xl mx-auto hero-content">
+      <div class="flex items-center gap-3 mb-5 md:mb-7 fade-up delay-1">
+        <div class="ornament-line"></div>
+        <span class="text-xs md:text-sm tracking-[0.25em] md:tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono">SS 2026 Collection</span>
+      </div>
+      <div class="hero-line fade-up delay-2">
+        <span class="hero-h1-line1" id="hero-title1-text">LEGACY STARTS</span>
+      </div>
+      <div class="hero-line fade-up delay-3">
+        <span class="hero-h1-line2 chrome-text-animated" id="hero-title2-text">WITH CHROME NOIR</span>
+      </div>
+      <div class="hero-line fade-up delay-4">
+        <span class="hero-h1-line3" style="text-shadow:0 0 80px rgba(192,192,192,.15);">NOT GOTHIC</span>
+      </div>
+      <div class="mt-8 md:mt-10 flex flex-col md:flex-row md:items-start gap-5 md:gap-8 fade-up delay-5 hero-actions">
+        <p class="text-xs md:text-sm text-[var(--chrome-dark)] tracking-[0.1em] leading-loose md:leading-relaxed max-w-xs font-mono uppercase">
+          Forged in obsidian.<br/>Finished in chrome.<br/>Worn by those who don't explain.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 sm:mt-1 w-full sm:w-auto">
+          <button onclick="showPage('shop')" class="text-xs md:text-sm tracking-[0.2em] uppercase font-mono text-black bg-[var(--chrome)] px-5 py-3 hover:bg-white transition-colors duration-300 rounded-sm w-full sm:w-auto text-center">
+            Shop Now
+          </button>
+          <button onclick="document.getElementById('story-section').scrollIntoView({behavior:'smooth'})" class="text-xs md:text-sm tracking-[0.2em] uppercase font-mono text-[var(--chrome)] border border-[rgba(192,192,192,.25)] px-5 py-3 hover:border-[rgba(192,192,192,.6)] transition-all duration-300 rounded-sm w-full sm:w-auto text-center">
+            Our Story
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="absolute top-36 right-[35%] opacity-30 pointer-events-none fade-up delay-6 hidden lg:block">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <path d="M40 5 C55 5,75 20,75 40 C75 60,55 75,40 75 C25 75,5 60,5 40 C5 20,25 5,40 5Z" stroke="rgba(192,192,192,.4)" stroke-width=".5" fill="none"/>
+        <path d="M40 15L43 32L58 32L46 42L50 58L40 48L30 58L34 42L22 32L37 32Z" fill="rgba(192,192,192,.15)" stroke="rgba(192,192,192,.3)" stroke-width=".5"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="relative z-10 overflow-hidden border-y border-[rgba(192,192,192,0.08)] py-3 bg-[rgba(0,0,0,0.6)]">
+    <div class="marquee-track">
+      <span class="flex items-center gap-6 pr-6" style="font-size:10px;letter-spacing:.25em;color:var(--chrome-dark);font-family:'Space Mono',monospace;text-transform:uppercase;">
+        <span>Chrome Noir</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>SS 2026</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Not Gothic</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Midnight Metal</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Dark Luxury</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Obsidian First</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Chrome Noir</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>SS 2026</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Not Gothic</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Midnight Metal</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Dark Luxury</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+        <span>Obsidian First</span><svg width="4" height="4" fill="rgba(192,192,192,.4)"><circle cx="2" cy="2" r="2"/></svg>
+      </span>
+    </div>
+  </div>
+
+  <section class="relative z-10 py-14 md:py-20 px-5 sm:px-8 md:px-12 lg:px-20" style="background:linear-gradient(180deg,#080808 0%,#050505 100%);">
+    <div class="flex items-center justify-between mb-10 md:mb-12 scroll-fade">
+      <div>
+        <p class="text-xs md:text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono mb-2">— Featured Drops</p>
+        <h2 class="font-playfair font-bold italic text-xl md:text-2xl chrome-text">The Chrome Collection</h2>
+      </div>
+      <a href="#" onclick="showPage('shop')" class="text-xs md:text-sm tracking-[0.2em] uppercase font-mono text-[var(--chrome-dark)] border-b border-[rgba(192,192,192,.2)] pb-0.5 hover:text-[var(--chrome)] hover:border-[rgba(192,192,192,.5)] transition-all whitespace-nowrap ml-4">View All →</a>
+    </div>
+    <div id="home-featured-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8">
+      <!-- Dynamic products loaded from Backendless via script.js renderHomeGrid() -->
+      <div class="col-span-4 py-12 text-center text-xs font-mono text-[var(--chrome-dark)] tracking-[.2em] uppercase">Loading Collection...</div>
+    </div>
+  </section>
+
+  <section id="story-section" class="relative z-10 py-20 md:py-28 px-5 sm:px-8 md:px-12 lg:px-20" style="background:linear-gradient(180deg,#050505 0%,#080808 100%);">
+    <div class="section-divider mb-16 md:mb-20"></div>
+    <div class="max-w-4xl">
+      <div class="flex items-center gap-3 mb-6 md:mb-8 scroll-fade">
+        <div class="ornament-line"></div>
+        <span class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono">The Manifesto</span>
+      </div>
+      <h2 class="font-playfair font-black italic text-[clamp(2rem,5vw,4rem)] text-white leading-none mb-6 md:mb-8 scroll-fade">
+        Born from the<br/>
+        <span class="chrome-text-animated">space between</span><br/>
+        shadow &amp; steel.
+      </h2>
+      <div class="space-y-5 md:space-y-6">
+        <div class="story-line scroll-fade">
+          <p class="text-[11px] text-[var(--chrome-dark)] tracking-[0.08em] leading-loose font-mono">
+            Chrome Noir was not designed. It was excavated — pulled from the tension between industrial weight and nocturnal elegance. Every seam holds a contradiction. Every fabric carries memory.
+          </p>
+        </div>
+        <div class="story-line scroll-fade">
+          <p class="text-[11px] text-[var(--chrome-dark)] tracking-[0.08em] leading-loose font-mono">
+            We don't follow seasons. We respond to them. SS 2026 is not a collection — it is a reckoning. Worn by those who understand that silence is the loudest statement.
+          </p>
+        </div>
+        <div class="story-line scroll-fade">
+          <p class="text-[11px] text-[var(--chrome-dark)] tracking-[0.08em] leading-loose font-mono">
+            Crafted in limited runs. Each piece numbered. None repeated. The chrome reflects what ordinary light refuses to see.
+          </p>
+        </div>
+      </div>
+      <div class="mt-8 md:mt-10 scroll-fade">
+        <button onclick="showPage('shop')" class="text-sm tracking-[0.2em] uppercase font-mono text-black bg-[var(--chrome)] px-6 py-3 hover:bg-white transition-colors duration-300 rounded-sm">
+          Explore Collection
+        </button>
+      </div>
+    </div>
+    <div class="section-divider mt-16 md:mt-20"></div>
+  </section>
+
+  <section class="bottom-banner relative z-10 overflow-hidden">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 p-4 md:p-8">
+      <div class="img-placeholder relative flex items-end justify-start p-4" style="background:linear-gradient(135deg,#111 0%,#0d0d0d 100%);">
+        <div class="absolute inset-0" style="background:linear-gradient(135deg,transparent 50%,rgba(0,0,0,.7) 100%);"></div>
+      </div>
+      <div class="img-placeholder relative" style="background:linear-gradient(135deg,#0f0f0f 0%,#0a0a0a 100%);"></div>
+      <div class="img-placeholder relative" style="background:linear-gradient(135deg,#0d0d0d 0%,#111 100%);">
+        <div class="absolute bottom-4 right-4 opacity-60">
+          <svg width="60" height="30" viewBox="0 0 60 30" fill="none">
+            <path d="M12 2L13.4 10L21 11L15 17L16.8 25L12 20L7.2 25L9 17L3 11L10.6 10Z" fill="rgba(192,192,192,.4)" stroke="rgba(192,192,192,.3)" stroke-width=".5"/>
+            <path d="M48 6L49 12L55 13L50 17L51.2 23L48 19.5L44.8 23L46 17L41 13L47 12Z" fill="rgba(192,192,192,.3)" stroke="rgba(192,192,192,.2)" stroke-width=".5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="img-placeholder relative" style="background:linear-gradient(135deg,#0a0a0a 0%,#0f0f0f 100%);"></div>
+    </div>
+    <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+      <div class="text-center px-4">
+        <p class="font-playfair italic text-[clamp(1.4rem,4vw,4rem)] text-white leading-tight tracking-wide" style="font-family:'IM Fell English',serif;text-shadow:0 0 60px rgba(0,0,0,.9),0 2px 40px rgba(0,0,0,1);">midnight reflects better</p>
+        <p class="font-playfair italic text-[clamp(1.4rem,4vw,4rem)] chrome-text-animated leading-tight tracking-wide" style="font-family:'IM Fell English',serif;">in metal</p>
+      </div>
+    </div>
+    <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(90deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.1) 50%,rgba(0,0,0,.5) 100%);"></div>
+    <div class="absolute bottom-5 left-6 md:left-8 opacity-40 float-slow hidden sm:block">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <path d="M18 2L20 15L33 18L20 21L18 34L16 21L3 18L16 15Z" fill="rgba(192,192,192,.5)" stroke="rgba(192,192,192,.3)" stroke-width=".5"/>
+      </svg>
+    </div>
+    <div class="absolute bottom-5 right-6 md:right-8 opacity-40 float-fast hidden sm:block">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+        <path d="M18 2L20 15L33 18L20 21L18 34L16 21L3 18L16 15Z" fill="rgba(192,192,192,.5)" stroke="rgba(192,192,192,.3)" stroke-width=".5"/>
+      </svg>
+    </div>
+  </section>
+
+  <section id="reviews-section" class="relative z-10 py-20 px-5 sm:px-8 md:px-12 lg:px-20" style="background:#070707;">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono mb-3">Customer Reviews</p>
+        <h2 class="font-playfair text-4xl italic chrome-text">Trusted By Our Community</h2>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p>"The quality feels unreal. The boots instantly became my favorite fit."</p>
+          <h4>— Arham, Dhaka</h4>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p>"Premium design, smooth delivery, and crazy attention to detail."</p>
+          <h4>— Tahmid, Chittagong</h4>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p>"Looks luxury both on mobile and in real life. Highly recommended."</p>
+          <h4>— Rafid, Sylhet</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq-section" class="relative z-10 py-20 px-5 sm:px-8 md:px-12 lg:px-20" style="background:#050505;">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono mb-3">FAQ</p>
+        <h2 class="font-playfair text-4xl italic chrome-text">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-wrapper">
+        <div class="faq-item">
+          <button class="faq-question">How long does shipping take?</button>
+          <div class="faq-answer"><p>Orders are usually delivered within 2–5 business days across Bangladesh.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Do you support Cash on Delivery?</button>
+          <div class="faq-answer"><p>Yes. Cash on Delivery and bKash are both available.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I exchange products?</button>
+          <div class="faq-answer"><p>Yes, exchanges are available within 7 days after receiving your order.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact-section" class="relative z-10 py-20 md:py-24 px-5 sm:px-8 md:px-12 lg:px-20" style="background:#000;">
+    <div class="max-w-xl mx-auto text-center">
+      <div class="flex items-center justify-center gap-3 mb-6 scroll-fade">
+        <div class="ornament-line"></div>
+        <span class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono">Stay in the Dark</span>
+        <div class="ornament-line"></div>
+      </div>
+      <h2 class="font-playfair font-black italic text-[clamp(1.8rem,4vw,3.5rem)] text-white mb-4 scroll-fade">
+        Join the <span class="chrome-text-animated">inner circle</span>
+      </h2>
+      <p class="text-xs md:text-sm text-[var(--chrome-dark)] tracking-[0.1em] leading-loose font-mono mb-8 md:mb-10 scroll-fade">
+        First access to new drops. No noise. Only signal.<br/>One email per month. Maximum.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-0 scroll-fade" style="border:1px solid rgba(192,192,192,.15);">
+        <input type="email" placeholder="your@email.com" class="flex-1 bg-transparent text-sm tracking-[0.1em] text-[var(--chrome)] font-mono px-4 py-3.5 outline-none placeholder:text-[rgba(192,192,192,0.2)]" style="border:none;min-width:0;"/>
+        <button class="text-xs md:text-sm tracking-[0.2em] uppercase font-mono text-black bg-[var(--chrome)] px-5 py-3.5 hover:bg-white transition-colors whitespace-nowrap">Subscribe</button>
+      </div>
+      <p class="text-[8px] tracking-[0.15em] uppercase font-mono text-[rgba(192,192,192,.2)] mt-4 scroll-fade">No spam. Unsubscribe anytime.</p>
+    </div>
+  </section>
+</div>
+
+<div id="page-shop" class="page">
+  <section class="relative z-10 pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-8 md:px-12 lg:px-20" style="background:linear-gradient(180deg,#080808 0%,#050505 100%);">
+    <div class="mb-12 md:mb-16 scroll-fade">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="ornament-line"></div>
+        <span class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono">SS 2026</span>
+      </div>
+      <h1 class="font-playfair font-black italic text-[clamp(2rem,6vw,5rem)] chrome-text leading-none">The Full Collection</h1>
+    </div>
+    <div class="flex items-center gap-3 md:gap-4 mb-10 md:mb-12 overflow-x-auto pb-2 scroll-fade" style="-webkit-overflow-scrolling:touch;">
+      <button class="size-btn filter-btn selected rounded-sm flex-shrink-0" onclick="filterProducts('all',this)">All</button>
+      <button class="size-btn filter-btn rounded-sm flex-shrink-0" onclick="filterProducts('tops',this)">Tops</button>
+      <button class="size-btn filter-btn rounded-sm flex-shrink-0" onclick="filterProducts('bottoms',this)">Bottoms</button>
+      <button class="size-btn filter-btn rounded-sm flex-shrink-0" onclick="filterProducts('outerwear',this)">Outerwear</button>
+      <button class="size-btn filter-btn rounded-sm flex-shrink-0" onclick="filterProducts('accessories',this)">Accessories</button>
+    </div>
+    <div id="shop-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8">
+      <!-- Dynamic products loaded from Backendless via script.js renderShopGrid() -->
+      <div class="col-span-4 py-16 text-center text-xs font-mono text-[var(--chrome-dark)] tracking-[.2em] uppercase">Loading Collection...</div>
+    </div>
+  </section>
+</div>
+
+<div id="page-detail" class="page">
+  <section class="relative z-10 pt-24 md:pt-32 pb-16 md:pb-20 px-5 sm:px-8 md:px-12 lg:px-20" style="background:linear-gradient(180deg,#080808 0%,#050505 100%);">
+    <div class="flex items-center gap-2 mb-8 md:mb-12 scroll-fade">
+      <button onclick="showPage('shop')" class="text-xs tracking-[0.2em] uppercase font-mono text-[var(--chrome-dark)] hover:text-[var(--chrome)] transition-colors">Shop</button>
+      <span class="text-[var(--chrome-dark)] opacity-40">/</span>
+      <span id="detail-breadcrumb" class="text-xs tracking-[0.2em] uppercase font-mono text-[var(--chrome)]">Product</span>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+      <div class="scroll-fade">
+        <div class="detail-img-area no-image rounded-xl aspect-[3/4] w-full flex items-center justify-center relative overflow-hidden" id="detail-main-img">
+          <div class="flex flex-col items-center gap-3 opacity-30">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="rgba(192,192,192,.5)" stroke-width="1"><rect x="4" y="4" width="24" height="24" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M4 22l7-7 5 5 4-4 8 8"/></svg>
+            <span class="text-[8px] tracking-[0.2em] font-mono text-[var(--chrome-dark)] uppercase">Product Image</span>
+          </div>
+          <button onclick="prevImage()" class="gallery-arrow gallery-arrow-left">
+            <svg width="20" height="20" fill="none" stroke="var(--chrome)" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button onclick="nextImage()" class="gallery-arrow gallery-arrow-right">
+            <svg width="20" height="20" fill="none" stroke="var(--chrome)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div id="detail-thumbnails" class="flex gap-2 mt-3"></div>
+      </div>
+      <div class="scroll-fade">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="ornament-line"></div>
+          <span id="detail-category" class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono">Category</span>
+          <span id="detail-badge" class="hidden text-[7px] tracking-[.2em] uppercase font-mono text-black bg-[var(--chrome)] px-2 py-0.5 rounded-sm ml-2"></span>
+        </div>
+        <h1 id="detail-name" class="font-playfair font-black italic text-[clamp(1.8rem,4vw,3.2rem)] text-white leading-tight mb-2"></h1>
+        <p id="detail-price" class="font-playfair font-bold text-3xl chrome-text mb-6"></p>
+        <p id="detail-stock" class="text-[10px] tracking-[.15em] uppercase font-mono mb-3 hidden"></p>
+        <p id="detail-desc" class="text-[11px] text-[var(--chrome-dark)] tracking-[0.08em] leading-loose font-mono mb-4 border-l border-[rgba(192,192,192,.15)] pl-4"></p>
+        <p id="detail-specs" class="text-[10px] text-[rgba(192,192,192,.4)] tracking-[0.06em] leading-loose font-mono mb-8 pl-4 hidden"></p>
+        <div class="mb-4 color-section">
+          <p class="text-sm tracking-[0.25em] uppercase text-[var(--chrome-dark)] font-mono mb-3">Select Color</p>
+          <div class="flex gap-2 flex-wrap" id="color-buttons"></div>
+        </div>
+        <div class="mb-6">
+          <p class="text-sm tracking-[0.25em] uppercase text-[var(--chrome-dark)] font-mono mb-3">Select Size</p>
+          <div class="flex gap-2 flex-wrap" id="size-buttons"></div>
+        </div>
+        <div class="mb-8 space-y-2">
+          <div class="flex items-center gap-3"><svg width="10" height="10" fill="none" stroke="rgba(192,192,192,.4)" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span class="text-xs tracking-[0.12em] uppercase font-mono text-[rgba(192,192,192,.4)]">Limited run — numbered pieces</span></div>
+          <div class="flex items-center gap-3"><svg width="10" height="10" fill="none" stroke="rgba(192,192,192,.4)" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span class="text-xs tracking-[0.12em] uppercase font-mono text-[rgba(192,192,192,.4)]">100% premium heavyweight fabric</span></div>
+          <div class="flex items-center gap-3"><svg width="10" height="10" fill="none" stroke="rgba(192,192,192,.4)" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span class="text-xs tracking-[0.12em] uppercase font-mono text-[rgba(192,192,192,.4)]">Free shipping on orders over ৳2000</span></div>
+        </div>
+        <div class="flex gap-3 flex-wrap">
+          <button id="detail-add-btn" onclick="addCurrentToCart()" class="flex-1 min-w-[140px] text-sm tracking-[0.2em] uppercase font-mono text-black bg-[var(--chrome)] px-6 py-4 hover:bg-white transition-colors duration-300 rounded-sm">Add to Cart</button>
+          <button onclick="buyNowCurrent()" class="buy-now-btn flex-1 min-w-[140px] text-sm tracking-[0.2em] uppercase font-mono px-6 py-4 rounded-sm">Buy Now</button>
+          <button class="icon-btn w-14 h-14 rounded-sm flex items-center justify-center"><svg width="16" height="16" fill="none" stroke="var(--chrome)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
+        </div>
+        <div class="mt-8 pt-8 border-t border-[rgba(192,192,192,0.08)] flex flex-wrap gap-4 md:gap-6">
+          <div class="flex items-center gap-2"><svg width="12" height="12" fill="none" stroke="rgba(192,192,192,.3)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><span class="text-[8px] tracking-[0.15em] uppercase font-mono text-[rgba(192,192,192,.3)]">Secure Checkout</span></div>
+          <div class="flex items-center gap-2"><svg width="12" height="12" fill="none" stroke="rgba(192,192,192,.3)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span class="text-[8px] tracking-[0.15em] uppercase font-mono text-[rgba(192,192,192,.3)]">3–5 Day Delivery</span></div>
+          <div class="flex items-center gap-2"><svg width="12" height="12" fill="none" stroke="rgba(192,192,192,.3)" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg><span class="text-[8px] tracking-[0.15em] uppercase font-mono text-[rgba(192,192,192,.3)]">30-Day Returns</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Products — rendered dynamically by showDetail() -->
+  <section class="related-section relative z-10 py-12 px-5 sm:px-8 md:px-12 lg:px-20" style="display:none">
+    <div class="mb-8">
+      <p class="text-xs tracking-[.3em] uppercase text-[var(--chrome-dark)] font-mono mb-2">You May Also Like</p>
+      <h3 class="font-playfair font-bold italic text-xl chrome-text">Related Pieces</h3>
+    </div>
+    <div id="related-products" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"></div>
+  </section>
+</div>
+
+<div id="page-checkout" class="page">
+  <section class="relative z-10 pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-8 md:px-12 lg:px-20 min-h-screen" style="background:linear-gradient(180deg,#080808 0%,#050505 100%);">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-12 md:mb-16 scroll-fade">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="ornament-line"></div>
+          <span class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono">Checkout</span>
+        </div>
+        <h1 class="font-playfair font-black italic text-[clamp(2rem,5vw,4rem)] chrome-text leading-none">Secure Checkout</h1>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12">
+        <div class="lg:col-span-3 space-y-8">
+          <div class="checkout-section scroll-fade">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="checkout-step-num">01</span>
+              <h3 class="text-sm tracking-[0.2em] uppercase font-mono text-[var(--chrome)]">Customer Information</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-field">
+                <label>Full Name <span class="text-red-400">*</span></label>
+                <input type="text" id="chk-name" placeholder="Example: Anwer Hosan" data-required="true">
+                <span class="field-error">Please enter your full name</span>
+              </div>
+              <div class="form-field">
+                <label>Phone Number <span class="text-red-400">*</span></label>
+                <input type="tel" id="chk-phone" placeholder="Example: 017XXXXXXXX" data-required="true">
+                <span class="field-error">Please enter a valid phone number</span>
+              </div>
+              <div class="form-field md:col-span-2">
+                <label>Email Address</label>
+                <input type="email" id="chk-email" placeholder="Example: name@email.com">
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-section scroll-fade">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="checkout-step-num">02</span>
+              <h3 class="text-sm tracking-[0.2em] uppercase font-mono text-[var(--chrome)]">Delivery Address</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-field">
+                <label>District <span class="text-red-400">*</span></label>
+                <select id="chk-district" onchange="updateDeliveryCharge()" data-required="true">
+                  <option value="">Select District</option>
+                  <option value="Dhaka">Dhaka</option>
+                  <option value="Barishal">Barishal</option>
+                  <option value="Chattogram">Chattogram</option>
+                  <option value="Khulna">Khulna</option>
+                  <option value="Mymensingh">Mymensingh</option>
+                  <option value="Rajshahi">Rajshahi</option>
+                  <option value="Rangpur">Rangpur</option>
+                  <option value="Sylhet">Sylhet</option>
+                </select>
+                <span class="field-error">Please select your district</span>
+              </div>
+              <div class="form-field">
+                <label>Thana <span class="text-red-400">*</span></label>
+                <input type="text" id="chk-thana" placeholder="Example: Gulshan" data-required="true">
+                <span class="field-error">Please enter your thana</span>
+              </div>
+              <div class="form-field">
+                <label>Area Name <span class="text-red-400">*</span></label>
+                <input type="text" id="chk-area" placeholder="Example: Bashundhara" data-required="true">
+                <span class="field-error">Please enter your area</span>
+              </div>
+              <div class="form-field">
+                <label>Zip Code</label>
+                <input type="text" id="chk-zip" placeholder="Example: 1212">
+              </div>
+              <div class="form-field">
+                <label>Post Office</label>
+                <input type="text" id="chk-post" placeholder="Example: Gulshan Post Office">
+              </div>
+              <div class="form-field">
+                <label>House No <span class="text-red-400">*</span></label>
+                <input type="text" id="chk-house" placeholder="Example: 42/A" data-required="true">
+                <span class="field-error">Please enter house number</span>
+              </div>
+              <div class="form-field">
+                <label>Road No</label>
+                <input type="text" id="chk-road" placeholder="Example: Road 12">
+              </div>
+              <div class="form-field">
+                <label>Sector / Block</label>
+                <input type="text" id="chk-sector" placeholder="Example: Sector 4">
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-section scroll-fade">
+            <div class="flex items-center gap-3 mb-6">
+              <span class="checkout-step-num">03</span>
+              <h3 class="text-sm tracking-[0.2em] uppercase font-mono text-[var(--chrome)]">Payment Method</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="payment-option-card" id="pay-cod" onclick="selectPayment('cod')">
+                <div class="payment-radio"></div>
+                <div class="payment-info">
+                  <span class="payment-title">Cash on Delivery</span>
+                  <span class="payment-desc">Pay when you receive</span>
+                </div>
+              </div>
+              <div class="payment-option-card" id="pay-bkash" onclick="selectPayment('bkash')">
+                <div class="payment-radio"></div>
+                <div class="payment-info">
+                  <span class="payment-title">bKash</span>
+                  <span class="payment-desc">Mobile banking payment</span>
+                </div>
+              </div>
+            </div>
+            <div id="bkash-info" class="bkash-info-box hidden mt-4">
+              <p class="text-xs text-[var(--chrome-dark)] font-mono mb-2">Send money to:</p>
+              <p class="text-sm text-white font-mono" id="bkash-number-display">YOUR_NUMBER_HERE</p>
+              <p class="text-[10px] text-[var(--chrome-dark)] font-mono mt-2">Amount will be auto-filled after confirmation</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2">
+          <div class="checkout-summary-card scroll-fade">
+            <h3 class="text-sm tracking-[0.2em] uppercase font-mono text-[var(--chrome)] mb-6">Order Summary</h3>
+            <div id="checkout-items" class="space-y-4 mb-6 max-h-[400px] overflow-y-auto"></div>
+            <div class="border-t border-[rgba(192,192,192,0.1)] pt-4 space-y-3">
+              <div class="flex justify-between text-xs font-mono text-[var(--chrome-dark)]">
+                <span>Subtotal</span>
+                <span id="checkout-subtotal">৳0</span>
+              </div>
+              <div class="flex justify-between text-xs font-mono text-[var(--chrome-dark)]">
+                <span>Delivery Charge</span>
+                <span id="checkout-delivery">৳0</span>
+              </div>
+              <div class="flex justify-between pt-3 border-t border-[rgba(192,192,192,0.1)]">
+                <span class="text-sm tracking-[0.15em] uppercase font-mono text-white">Total</span>
+                <span id="checkout-total" class="font-playfair font-bold text-xl chrome-text">৳0</span>
+              </div>
+            </div>
+            <button id="confirm-order-btn" onclick="confirmOrder()" class="w-full mt-6 text-sm tracking-[0.2em] uppercase font-mono text-black bg-[var(--chrome)] px-6 py-4 hover:bg-white transition-all duration-300 rounded-sm">
+              Confirm Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-tracking" class="page">
+  <section class="relative z-10 pt-28 md:pt-32 pb-16 md:pb-20 px-5 sm:px-8 md:px-12 lg:px-20 min-h-screen" style="background:linear-gradient(180deg,#080808 0%,#050505 100%);">
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-12 md:mb-16 scroll-fade">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="ornament-line"></div>
+          <span class="text-sm tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono">Order Status</span>
+        </div>
+        <h1 class="font-playfair font-black italic text-[clamp(2rem,5vw,4rem)] chrome-text leading-none">Shipping Details</h1>
+      </div>
+
+      <div id="tracking-content" class="space-y-6">
+        </div>
+    </div>
+  </section>
+</div>
+
+<footer class="relative z-10 border-t border-[rgba(192,192,192,0.06)] py-12 md:py-16 px-5 sm:px-8 md:px-12 lg:px-20" style="background:rgba(0,0,0,0.98);">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-10 md:mb-12">
+    <div class="sm:col-span-2">
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-7 h-7 rounded-full border border-[rgba(192,192,192,0.2)] flex items-center justify-center">
+          <svg width="8" height="8" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="3" fill="rgba(192,192,192,0.6)"/></svg>
+        </div>
+        <span class="font-playfair text-xs font-bold tracking-[0.2em] text-[var(--chrome-light)] uppercase">Chrome Noir</span>
+      </div>
+      <p class="text-sm text-[var(--chrome-dark)] tracking-[0.08em] leading-loose font-mono max-w-xs mb-6">
+        Forged in obsidian. Finished in chrome.<br/>Worn by those who don't explain.
+      </p>
+      <div class="flex gap-3" id="social-links-footer">
+        <!-- Instagram -->
+        <a id="footer-instagram" href="https://www.instagram.com/chromenoir" target="_blank" rel="noopener" class="social-link icon-btn" aria-label="Instagram">
+          <svg width="14" height="14" fill="none" stroke="var(--chrome)" stroke-width="1.5" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="var(--chrome)" stroke="none"/>
+          </svg>
+        </a>
+        <!-- TikTok -->
+        <a id="footer-tiktok" href="https://www.tiktok.com/@chromenoir" target="_blank" rel="noopener" class="social-link icon-btn" aria-label="TikTok">
+          <svg width="14" height="14" fill="var(--chrome)" viewBox="0 0 24 24">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.15 8.15 0 004.77 1.52V7.24a4.85 4.85 0 01-1.01-.55z"/>
+          </svg>
+        </a>
+        <!-- Facebook -->
+        <a id="footer-facebook" href="https://www.facebook.com/chromenoir" target="_blank" rel="noopener" class="social-link icon-btn" aria-label="Facebook">
+          <svg width="14" height="14" fill="var(--chrome)" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <p class="text-[8px] tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono mb-5 md:mb-6">Navigate</p>
+      <div class="space-y-3">
+        <a href="#" onclick="showPage('home')" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Home</a>
+        <a href="#" onclick="showPage('shop')" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Shop</a>
+        <a href="#" onclick="showPage('home');setTimeout(()=>document.getElementById('story-section').scrollIntoView({behavior:'smooth'}),100)" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Our Story</a>
+        <a href="#" onclick="showPage('home');setTimeout(()=>document.getElementById('contact-section').scrollIntoView({behavior:'smooth'}),100)" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Contact</a>
+      </div>
+    </div>
+    <div>
+      <p class="text-[8px] tracking-[0.3em] uppercase text-[var(--chrome-dark)] font-mono mb-5 md:mb-6">Info</p>
+      <div class="space-y-3">
+        <a href="pages/sizing-guide.html" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Sizing Guide</a>
+        <a href="pages/shipping.html" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Shipping</a>
+        <a href="pages/returns.html" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Returns</a>
+        <a href="pages/privacy.html" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Privacy</a>
+        <a href="pages/terms.html" class="block text-sm tracking-[0.15em] text-[rgba(192,192,192,0.4)] uppercase font-mono hover:text-[var(--chrome)] transition-colors">Terms</a>
+      </div>
+    </div>
+  </div>
+  <div class="section-divider mb-6"></div>
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+    <p class="text-[8px] tracking-[0.2em] text-[rgba(192,192,192,0.2)] font-mono uppercase">© 2026 Chrome Noir. All shadows reserved.</p>
+    <p class="text-[8px] tracking-[0.15em] text-[rgba(192,192,192,0.15)] font-mono uppercase">contact@chromenoir.co</p>
+  </div>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shipping — Chrome Noir</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .back-btn{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--chrome-dark);border-bottom:1px solid rgba(192,192,192,.15);padding-bottom:2px;transition:color .2s,border-color .2s}
+    .back-btn:hover{color:var(--chrome);border-color:rgba(192,192,192,.4)}
+    .divider{width:100%;height:1px;background:rgba(192,192,192,.06);margin:2rem 0}
+    .ship-card{background:rgba(255,255,255,.02);border:1px solid rgba(192,192,192,.08);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+  </style>
+</head>
+<body style="min-height:100vh;background:#080808;">
+
+<nav style="position:sticky;top:0;z-index:100;background:rgba(10,10,10,.9);border-bottom:1px solid rgba(192,192,192,.08);backdrop-filter:blur(20px);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+  <a href="../index.html" class="back-btn">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Chrome Noir
+  </a>
+  <span style="font-family:'Playfair Display',serif;font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--chrome-light);text-transform:uppercase;">Chrome Noir</span>
+</nav>
+
+<main style="padding:60px 24px 80px;max-width:800px;margin:0 auto;">
+
+  <div style="margin-bottom:40px">
+    <p style="font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--chrome-dark);font-family:'Space Mono',monospace;margin-bottom:12px">— Delivery</p>
+    <h1 style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);color:white;line-height:1.1">Shipping<br/><span style="background:linear-gradient(135deg,#888,#e8e8e8,#aaa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Information</span></h1>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--chrome);margin-bottom:16px;font-style:italic">Delivery Zones & Charges</h2>
+
+  <div class="ship-card">
+    <p style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--chrome);font-family:'Space Mono',monospace;font-weight:700;margin-bottom:12px">Dhaka City</p>
+    <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Delivery Charge: <strong style="color:white">৳80</strong></p>
+    <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Estimated Time: <strong style="color:white">2–3 Business Days</strong></p>
+  </div>
+
+  <div class="ship-card">
+    <p style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--chrome);font-family:'Space Mono',monospace;font-weight:700;margin-bottom:12px">Outside Dhaka (All Other Districts)</p>
+    <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Delivery Charge: <strong style="color:white">৳150</strong></p>
+    <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Covers: Barishal, Chattogram, Khulna, Mymensingh, Rajshahi, Rangpur, Sylhet</p>
+    <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;line-height:1.8">Estimated Time: <strong style="color:white">3–5 Business Days</strong></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--chrome);margin-bottom:16px;font-style:italic">Free Shipping</h2>
+  <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;letter-spacing:.06em;line-height:1.9;margin-bottom:16px">
+    Orders above <strong style="color:var(--chrome)">৳2,000</strong> qualify for free shipping anywhere in Bangladesh. Discount is applied automatically at checkout.
+  </p>
+
+  <div class="divider"></div>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--chrome);margin-bottom:16px;font-style:italic">Order Processing</h2>
+  <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;letter-spacing:.06em;line-height:1.9;margin-bottom:12px">
+    Orders placed before 2:00 PM (BST) are processed the same day. Orders placed after 2:00 PM are processed the following business day. We do not process orders on Fridays or public holidays.
+  </p>
+
+  <div class="divider"></div>
+
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--chrome);margin-bottom:16px;font-style:italic">Tracking Your Order</h2>
+  <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;letter-spacing:.06em;line-height:1.9;margin-bottom:12px">
+    Once your order is dispatched, you can track it from your <strong style="color:var(--chrome)">Orders</strong> section on the Chrome Noir website. You will also receive updates via SMS on the phone number provided at checkout.
+  </p>
+  <p style="font-size:12px;color:var(--chrome-dark);font-family:'Space Mono',monospace;letter-spacing:.06em;line-height:1.9">
+    For any delivery concerns, contact us at <span style="color:var(--chrome)">contact@chromenoir.co</span>
+  </p>
+
+</main>
+</body>
+</html>
